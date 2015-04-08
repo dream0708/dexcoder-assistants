@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.dexcoder.assistant.bean.BeanConverter;
+
 /**
  * 分页等常用信息存储
  *
@@ -31,17 +33,17 @@ public class Pageable implements Serializable {
      * @param <T>
      * @return
      */
-    //    public <T> T getTargetObject(Class<T> clazz) {
-    //        try {
-    //            T t = clazz.newInstance();
-    //            return BeanConverter.convert(t, this);
-    //        } catch (InstantiationException e) {
-    //            //ignore
-    //        } catch (IllegalAccessException e) {
-    //            //ignore
-    //        }
-    //        return null;
-    //    }
+    public <T> T getTargetObject(Class<T> clazz) {
+        try {
+            T t = clazz.newInstance();
+            return BeanConverter.convert(t, this);
+        } catch (InstantiationException e) {
+            //ignore
+        } catch (IllegalAccessException e) {
+            //ignore
+        }
+        return null;
+    }
 
     /**
      * 重写toString方法
