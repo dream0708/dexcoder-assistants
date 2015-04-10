@@ -26,16 +26,19 @@
 6. 方便强大的分页功能，无须额外操作，二三行代码搞定分页，自动判断数据库，无须指定。
 
 要在项目中使用通用dao十分简单，只需要在spring的配置文件中声明如下bean：
-    <bean id="jdbcDao" class="com.dexcoder.assistant.persistence.JdbcDaoImpl">
+    <pre>
+	`<bean id="jdbcDao" class="com.dexcoder.assistant.persistence.JdbcDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     <!--需要分页时声明-->
-    <bean id="pageControl" class="com.dexcoder.assistant.interceptor.PageControl"/>
+    <bean id="pageControl" class="com.dexcoder.assistant.interceptor.PageControl"/>`
+    </pre>
 接下来就可以注入到您的`Service`或者其它类中使用了。
 
 ##下面是一些常用的方法示例，这里的`Entity`对象为`User`，对于任何的`Entity`都是一样的.
 
 先来看一下`User`对象及它继承的`Pageable`
+
 	public class User extends Pageable {
 		private Long    userId;
 		private String  userName;
@@ -46,6 +49,7 @@
 	}
 	
 Pageable对象，用来保存页码、每页条数信息以支持分页
+
 	public class Pageable implements Serializable {
 		/** 每页显示条数 */
 		protected int             itemsPerPage     = 20;
@@ -232,6 +236,21 @@ Pageable对象，用来保存页码、每页条数信息以支持分页
 		jdbcDao.queryList(criteria);
 		Pager pager = PageControl.getPager();
 	}
+	
+###一些说明
+
+JdbcDao在声明时可以根据需要注入其它几个参数：
+
+   <pre>`<bean id="jdbcDao" class="com.dexcoder.assistant.persistence.JdbcDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="nameHandler" ref="..."/>
+        <property name="rowMapperClass" value="..."/>
+        <property name="dialect" value="..."/>
+    </bean>`</pre>
+    
+- nameHandler 默认使用DefaultNameHandler，即遵守上面的约定优于配置，如果需要自定义可以实现该接口。
+- rowMapperClass 默认使用了spring的`BeanPropertyRowMapper.newInstance(clazz)`,需要自定义可以自行实现，标准spring的RowMapper实现即可。
+- dialect 默认为自增类主键如MySql，其它类型请指定数据库如oracle
 
 ##相关链接
 
