@@ -255,6 +255,7 @@ JdbcDao在声明时可以根据需要注入其它几个参数：
 ##相关链接
 
 对应的实现思路及步骤：http://www.dexcoder.com/blog/series/56.shtml
+
 某些详细信息可能需要阅读第一个版本：http://www.dexcoder.com/blog/series/32.shtml
 
 作者QQ： 341470  
